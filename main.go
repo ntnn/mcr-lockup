@@ -71,6 +71,10 @@ func Run(ctx context.Context, kubeconfigs []string) error {
 		}
 	}()
 
+	ctrl.Log.Info("starting cluster cache")
+	cl.GetCache().WaitForCacheSync(ctx)
+	ctrl.Log.Info("cluster cache synced")
+
 	timeoutCtx, timeoutCancel := context.WithTimeout(ctx, time.Second*10)
 	defer timeoutCancel()
 
