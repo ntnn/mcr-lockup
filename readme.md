@@ -2,12 +2,14 @@
 
 Create a kind cluster:
 
-    kind create cluster --name mcr-lockup --kubeconfig mcr-lockup.kubeconfig
+    kind create cluster --name mcr-lockup-1 --kubeconfig mcr-lockup-1.kubeconfig
+
+    kind create cluster --name mcr-lockup-2 --kubeconfig mcr-lockup-2.kubeconfig
 
 
 Run the working version:
 
-    ( cd cmd/working && go run . -kubeconfigs ../../mcr-lockup.kubeconfig )
+    ( cd cmd/working && go run . -kubeconfigs ../../mcr-lockup-1.kubeconfig,../../mcr-lockup-2.kubeconfig )
 
 The working version will shutdown again after a few seconds after the
 first reconcile event.
@@ -37,3 +39,8 @@ any reconcile events.
 2025-11-23T22:56:53+01:00       INFO    controller-runtime.metrics      Serving metrics server  {"bindAddress": ":8080", "secure": false}
 2025-11-23T22:56:58+01:00       INFO    timeout waiting for first reconcile event, shutting down
 ```
+
+Run on main:
+
+    ( cd cmd/main && go run . -kubeconfigs ../../mcr-lockup-1.kubeconfig,../../mcr-lockup-2.kubeconfig )
+
