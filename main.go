@@ -68,7 +68,7 @@ func Run(ctx context.Context, kubeconfigs []string) error {
 		}
 	}()
 
-	timeoutCtx, timeoutCancel := context.WithTimeout(ctx, time.Second*10)
+	timeoutCtx, timeoutCancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer timeoutCancel()
 
 	recvClusters := map[string]struct{}{}
@@ -83,9 +83,9 @@ outer:
 			recvClusters[clusterName] = struct{}{}
 			ctrl.Log.Info("received reconcile event", "clusterNames", slices.Sorted(maps.Keys(recvClusters)))
 			if len(recvClusters) == len(kubeconfigs) {
-				continue
+				cancel()
+				break outer
 			}
-			cancel()
 		case <-timeoutCtx.Done():
 			cancel()
 			ctrl.Log.Info("timeout waiting for reconcile events, shutting down")
