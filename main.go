@@ -73,6 +73,7 @@ func Run(ctx context.Context, kubeconfigs []string) error {
 
 	recvClusters := map[string]struct{}{}
 
+outer:
 	for {
 		select {
 		case <-ctx.Done():
@@ -88,7 +89,7 @@ func Run(ctx context.Context, kubeconfigs []string) error {
 		case <-timeoutCtx.Done():
 			cancel()
 			ctrl.Log.Info("timeout waiting for reconcile events, shutting down")
-			break
+			break outer
 		}
 	}
 
