@@ -27,7 +27,7 @@ first reconcile event.
 
 Run the broken manager:
 
-    ( cd cmd/broken && go run . -kubeconfigs ../../mcr-lockup.kubeconfig )
+    ( cd cmd/broken && go run . -kubeconfigs ../../mcr-lockup-1.kubeconfig,../../mcr-lockup-2.kubeconfig )
 
 The broken manager will shutdown after a timeout of 10s without receiving
 any reconcile events.
@@ -43,4 +43,8 @@ any reconcile events.
 Run on main:
 
     ( cd cmd/main && go run . -kubeconfigs ../../mcr-lockup-1.kubeconfig,../../mcr-lockup-2.kubeconfig )
+
+Run against a local clone:
+
+    ( cd cmd/local && go run . -kubeconfigs ../../mcr-lockup-1.kubeconfig,../../mcr-lockup-2.kubeconfig )
 
