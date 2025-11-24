@@ -3,7 +3,9 @@ package mcrlockup
 import (
 	"context"
 	"fmt"
+	"maps"
 	"os"
+	"slices"
 	"time"
 
 	corev1 "k8s.io/api/core/v1"
@@ -78,14 +80,15 @@ func Run(ctx context.Context, kubeconfigs []string) error {
 			return nil
 		case clusterName := <-recv:
 			recvClusters[clusterName] = struct{}{}
-			ctrl.Log.Info("received reconcile event, shutting down")
+			ctrl.Log.Info("received reconcile event", "clusterNames", slices.Sorted(maps.Keys(recvClusters)))
 			if len(recvClusters) == len(kubeconfigs) {
 				continue
 			}
 			cancel()
 		case <-timeoutCtx.Done():
 			cancel()
-			ctrl.Log.Info("timeout waiting for first reconcile event, shutting down")
+			ctrl.Log.Info("timeout waiting for reconcile events, shutting down")
+			break
 		}
 	}
 
