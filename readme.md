@@ -1,5 +1,8 @@
 # mcr lockup
 
+> [!IMPORTANT]
+> Fixed upstream in https://github.com/kubernetes-sigs/multicluster-runtime/pull/108
+
 Create a kind cluster:
 
     kind create cluster --name mcr-lockup-1 --kubeconfig mcr-lockup-1.kubeconfig
